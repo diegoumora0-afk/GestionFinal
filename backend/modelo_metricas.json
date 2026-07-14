@@ -1,0 +1,24 @@
+{
+  "metricas_test": {
+    "rendimiento_kg_ha": {
+      "MAE": 643.42,
+      "R2": 0.981
+    },
+    "produccion_t": {
+      "MAE": 1345.51,
+      "R2": 0.984
+    },
+    "precio_chacra_soles_kg": {
+      "MAE": 0.22,
+      "R2": 0.868
+    }
+  },
+  "n_filas_entrenamiento": 594,
+  "n_cultivos": 156,
+  "anios_disponibles": [
+    2020,
+    2021,
+    2022,
+    2023
+  ]
+}

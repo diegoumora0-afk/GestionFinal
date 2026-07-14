@@ -1,0 +1,17 @@
+# Entorno virtual
+.venv/
+__pycache__/
+*.pyc
+
+# Datos sensibles / base de datos
+*.db
+*.pkl
+
+# Datos crudos (opcional, descomenta si no quieres subir tus excel/csv)
+# data/*
+
+# Archivos de entorno
+.env
+
+# Sistema
+.DS_Store

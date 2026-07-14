@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroPredict IA</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap (Dark theme base) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet CSS (Mapa) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Hero Section con Background Image -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container h-100 position-relative z-3 d-flex flex-column justify-content-center">
+      <div class="row w-100 m-0">
+        <!-- Texto a la izquierda -->
+        <div class="col-lg-6 hero-text-container">
+          <p class="text-success-custom fw-bold mb-2">Bienvenidos a AgroPredict</p>
+          <h1 class="hero-title text-white">Inteligencia Artificial<br>en la Agricultura</h1>
+          <p class="hero-description text-white">
+            Anticipa rendimientos, domina el impacto climático y visualiza tendencias del mercado para la región de Ica.
+          </p>
+          <div class="hero-buttons mt-4">
+            <a href="#dashboard-section" class="btn-hero text-decoration-none">
+              Empezar Análisis
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Cards superpuestas al final del Hero -->
+    <div class="info-cards-wrapper">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-3">
+            <div class="info-card glass-panel card-green">
+              <h5 class="fw-bold mb-3 text-white">¿En qué zona?</h5>
+              <p class="small mb-0 text-white">Enfocado en la región de Ica, con perfiles específicos para distritos como Ocucaje y San Camilo.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-card glass-panel">
+              <h5 class="fw-bold mb-3 text-white">¿Qué data?</h5>
+              <p class="small mb-0 text-white">Modelos alimentados por históricos de producción, variaciones climáticas y demanda del mercado.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-card glass-panel">
+              <h5 class="fw-bold mb-3 text-white">¿Para qué?</h5>
+              <p class="small mb-0 text-white">Para maximizar el rendimiento por hectárea y anticipar el mejor momento y precio de venta.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-card glass-panel">
+              <h5 class="fw-bold mb-3 text-white">¿Por qué?</h5>
+              <p class="small mb-0 text-white">Para transformar la incertidumbre agrícola en decisiones seguras, rentables y basadas en IA.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Curved divider at bottom (opcional, como en la imagen) -->
+    <div class="hero-curve">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Sección Principal del Dashboard -->
+  <div id="dashboard-section" class="dashboard-wrapper">
+    <!-- Navbar (Aparece aquí abajo) -->
+    <nav class="navbar navbar-expand-lg glass-navbar mb-4 py-3">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" href="#">
+        <i class="fa-solid fa-leaf text-success-custom me-2"></i> AgroPredict IA
+      </a>
+      
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-pills ms-auto" id="app-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="tab-prediccion" data-bs-toggle="pill" data-bs-target="#view-prediccion" type="button" role="tab">
+            <i class="fa-solid fa-chart-line me-1"></i> Predicción
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-riesgo" data-bs-toggle="pill" data-bs-target="#view-riesgo" type="button" role="tab">
+            <i class="fa-solid fa-border-all me-1"></i> Cuadrante Riesgo
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-clima" data-bs-toggle="pill" data-bs-target="#view-clima" type="button" role="tab">
+            <i class="fa-solid fa-cloud-sun me-1"></i> Impacto Climático
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-mercado" data-bs-toggle="pill" data-bs-target="#view-mercado" type="button" role="tab">
+            <i class="fa-solid fa-earth-americas me-1"></i> Mercado en Vivo
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container pb-5">
+    <div class="tab-content" id="app-views">
+      
+      <!-- VISTA 1: Predicción (Principal) -->
+      <div class="tab-pane fade show active" id="view-prediccion" role="tabpanel">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <div class="glass-panel p-4">
+              <h5 class="mb-4"><i class="fa-solid fa-wand-magic-sparkles me-2 text-warning"></i>Nueva Predicción</h5>
+              <form id="form-prediccion">
+                
+                <div class="mb-4">
+                  <label class="form-label">Cultivo</label>
+                  <div class="searchable-select-container">
+                    <input type="text" id="input-search-cultivo" class="form-control glass-input" placeholder="Buscar cultivo..." autocomplete="off">
+                    <div id="dropdown-cultivos" class="searchable-select-dropdown">
+                      <!-- Opciones inyectadas por JS -->
+                    </div>
+                  </div>
+                  <input type="hidden" id="select-cultivo" required>
+                </div>
+
+                <div class="mb-4">
+                  <label for="input-anio" class="form-label">Año objetivo</label>
+                  <input type="number" id="input-anio" class="form-control glass-input" min="2020" max="2100" value="2024" required />
+                </div>
+
+                <button type="submit" class="w-100 glass-button fw-bold">
+                  Generar Predicción
+                </button>
+              </form>
+              <div id="estado-mensaje" class="mt-3 small text-center"></div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <!-- Resultados Clave -->
+            <div class="row mb-4" id="fila-resultados" style="display: none;">
+              <div class="col-md-4 mb-3">
+                <div class="glass-panel p-3 text-center h-100">
+                  <div class="resultado-label"><i class="fa-solid fa-seedling me-1"></i> Rendimiento</div>
+                  <div class="resultado-valor text-success-custom mt-2" id="valor-rendimiento">-</div>
+                  <div class="text-muted small">kg/ha</div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="glass-panel p-3 text-center h-100">
+                  <div class="resultado-label"><i class="fa-solid fa-boxes-stacked me-1"></i> Producción</div>
+                  <div class="resultado-valor text-primary-custom mt-2" id="valor-produccion">-</div>
+                  <div class="text-muted small">toneladas</div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="glass-panel p-3 text-center h-100">
+                  <div class="resultado-label"><i class="fa-solid fa-coins me-1"></i> Precio Chacra</div>
+                  <div class="resultado-valor text-warning-custom mt-2" id="valor-precio">-</div>
+                  <div class="text-muted small">soles/kg</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div class="glass-panel p-4 mb-4" id="card-grafico-rendimiento" style="display: none;">
+              <h6 class="mb-3 text-muted"><i class="fa-solid fa-chart-bar me-2"></i>Evolución del Rendimiento</h6>
+              <canvas id="chart-rendimiento" height="100"></canvas>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="glass-panel p-4 mb-4" id="card-grafico-produccion" style="display: none;">
+                  <h6 class="mb-3 text-muted"><i class="fa-solid fa-chart-line me-2"></i>Producción (t)</h6>
+                  <canvas id="chart-produccion" height="150"></canvas>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="glass-panel p-4 mb-4" id="card-grafico-precio" style="display: none;">
+                  <h6 class="mb-3 text-muted"><i class="fa-solid fa-tag me-2"></i>Precio (soles/kg)</h6>
+                  <canvas id="chart-precio" height="150"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA 2: Riesgo-Rendimiento -->
+      <div class="tab-pane fade" id="view-riesgo" role="tabpanel">
+        <div class="glass-panel p-4">
+          <h4 class="mb-2"><i class="fa-solid fa-border-all text-primary me-2"></i>Decisión Estratégica</h4>
+          <p class="text-muted mb-4 small">
+            Ubica los cultivos en la <strong>zona superior izquierda</strong> (Alta Ganancia, Bajo Riesgo) para la mejor rentabilidad.
+          </p>
+          <div style="height: 500px; width: 100%;">
+            <canvas id="chart-riesgo-rendimiento"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA 3: Impacto Climático -->
+      <div class="tab-pane fade" id="view-clima" role="tabpanel">
+        <div class="glass-panel p-4">
+          <h4 class="mb-4"><i class="fa-solid fa-cloud-sun text-warning me-2"></i>Perfil Climático (Ocucaje / San Camilo)</h4>
+          <p class="text-muted mb-4">Condiciones promedio reales que impactan la producción. La temperatura y humedad son vitales para la floración.</p>
+          <div style="height: 400px; width: 100%;">
+            <canvas id="chart-clima"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA 4: Mercado en Vivo -->
+      <div class="tab-pane fade" id="view-mercado" role="tabpanel">
+        <div class="row">
+          <div class="col-lg-5 mb-4">
+            <div class="glass-panel p-4 h-100 position-relative">
+              <div class="live-indicator"><div class="dot"></div> EN VIVO</div>
+              <h4 class="mb-4"><i class="fa-solid fa-arrow-trend-up text-success me-2"></i>Ranking Regional</h4>
+              <p class="text-muted small">Demanda cíclica actualizada en tiempo real.</p>
+              
+              <div id="ranking-container" class="mt-4">
+                <div class="text-center text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Cargando datos...</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 mb-4">
+            <div class="glass-panel p-4 h-100">
+              <h4 class="mb-4"><i class="fa-solid fa-map-location-dot text-info me-2"></i>Mapa de Demanda</h4>
+              <p class="text-muted small mb-4">Distribución del interés de compra a nivel nacional.</p>
+              <div id="map-container">
+                <!-- SVG de mapa placeholder -->
+                <div class="text-center">
+                  <i class="fa-solid fa-map text-muted" style="font-size: 5rem; opacity: 0.2"></i>
+                  <p class="mt-3 text-muted">Mapa interactivo de regiones.<br> (Espacio reservado para integrar un SVG o GeoJSON de Perú)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div> <!-- Fin de dashboard-section -->
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="scripts.js"></script>
+</body>
+</html>
