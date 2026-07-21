@@ -128,18 +128,46 @@ formPrediccion.addEventListener("submit", async (evento) => {
     // Fetch predictions for all years and months
     const reqs = [];
     for (let y = anioInicio; y <= anioFin; y++) {
-      for (let m = 1; m <= 12; m++) {
-        reqs.push(
-          fetch(`${API_BASE_URL}/predecir`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cultivo, anio: y, mes: m })
-          }).then(r => r.json()).then(data => ({ ...data, anio: y, mes: m }))
-        );
+      if (y === anioFin) {
+        // Año objetivo: pedir los 12 meses
+        for (let m = 1; m <= 12; m++) {
+          reqs.push({
+            url: `${API_BASE_URL}/predecir`,
+            options: {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ cultivo, anio: y, mes: m })
+            },
+            y, m
+          });
+        }
+      } else {
+        // Años históricos: pedir solo 1 mes representativo para armar el gráfico rápido
+        reqs.push({
+            url: `${API_BASE_URL}/predecir`,
+            options: {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ cultivo, anio: y, mes: 1 })
+            },
+            y, m: 1
+        });
       }
     }
 
-    const resultadosMensuales = await Promise.all(reqs);
+    // Peticiones en lotes pequeños (chunks de 5) para no tumbar el servidor (DOS)
+    const resultadosMensuales = [];
+    for (let i = 0; i < reqs.length; i += 5) {
+      const chunk = reqs.slice(i, i + 5);
+      const chunkResults = await Promise.all(
+        chunk.map(req => 
+          fetch(req.url, req.options)
+            .then(res => res.json())
+            .then(data => ({ ...data, anio: req.y, mes: req.m }))
+        )
+      );
+      resultadosMensuales.push(...chunkResults);
+    }
 
     let labels = [];
     let dataRendimiento = [];
