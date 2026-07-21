@@ -102,7 +102,7 @@ def obtener_metricas():
 
 @app.post("/predecir", response_model=PrediccionOutput)
 def predecir(datos: PrediccionInput):
-    cultivo = datos.cultivo.strip()
+    cultivo = datos.cultivo.strip().lower()
     mes = max(1, min(12, datos.mes))  # Clamp entre 1 y 12
 
     if cultivo not in cultivos_validos:
