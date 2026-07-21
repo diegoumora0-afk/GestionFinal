@@ -107,8 +107,8 @@
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="tab-mercado" data-bs-toggle="pill" data-bs-target="#view-mercado" type="button" role="tab">
-            <i class="fa-solid fa-earth-americas me-1"></i> Mercado en Vivo
+          <button class="nav-link" id="tab-proyeccion" data-bs-toggle="pill" data-bs-target="#view-proyeccion" type="button" role="tab">
+            <i class="fa-solid fa-map-location-dot me-1"></i> Proyección Provincial
           </button>
         </li>
       </ul>
@@ -123,7 +123,7 @@
         <div class="row">
           <div class="col-lg-4 mb-4">
             <div class="glass-panel p-4">
-              <h5 class="mb-4"><i class="fa-solid fa-wand-magic-sparkles me-2 text-warning"></i>Nueva Predicción</h5>
+              <h5 class="mb-4">Nueva Predicción</h5>
               <form id="form-prediccion">
                 
                 <div class="mb-4">
@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="mb-4">
-                  <label for="input-anio" class="form-label">Año objetivo</label>
+                  <label for="input-anio" class="form-label text-muted small fw-bold">Año Objetivo</label>
                   <input type="number" id="input-anio" class="form-control glass-input" min="2020" max="2100" value="2024" required />
                 </div>
 
@@ -178,20 +178,20 @@
 
             <!-- Gráficos -->
             <div class="glass-panel p-4 mb-4" id="card-grafico-rendimiento" style="display: none;">
-              <h6 class="mb-3 text-muted"><i class="fa-solid fa-chart-bar me-2"></i>Evolución del Rendimiento</h6>
+              <h6 class="mb-3 text-muted">Evolución del Rendimiento</h6>
               <canvas id="chart-rendimiento" height="100"></canvas>
             </div>
             
             <div class="row">
               <div class="col-md-6">
                 <div class="glass-panel p-4 mb-4" id="card-grafico-produccion" style="display: none;">
-                  <h6 class="mb-3 text-muted"><i class="fa-solid fa-chart-line me-2"></i>Producción (t)</h6>
+                  <h6 class="mb-3 text-muted">Producción (t)</h6>
                   <canvas id="chart-produccion" height="150"></canvas>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="glass-panel p-4 mb-4" id="card-grafico-precio" style="display: none;">
-                  <h6 class="mb-3 text-muted"><i class="fa-solid fa-tag me-2"></i>Precio (soles/kg)</h6>
+                  <h6 class="mb-3 text-muted">Precio (soles/kg)</h6>
                   <canvas id="chart-precio" height="150"></canvas>
                 </div>
               </div>
@@ -202,13 +202,76 @@
 
       <!-- VISTA 2: Riesgo-Rendimiento -->
       <div class="tab-pane fade" id="view-riesgo" role="tabpanel">
-        <div class="glass-panel p-4">
-          <h4 class="mb-2"><i class="fa-solid fa-border-all text-primary me-2"></i>Decisión Estratégica</h4>
-          <p class="text-muted mb-4 small">
-            Ubica los cultivos en la <strong>zona superior izquierda</strong> (Alta Ganancia, Bajo Riesgo) para la mejor rentabilidad.
-          </p>
-          <div style="height: 500px; width: 100%;">
-            <canvas id="chart-riesgo-rendimiento"></canvas>
+        <div class="row">
+          <!-- Panel principal del gráfico -->
+          <div class="col-lg-8 mb-4">
+            <div class="glass-panel p-4">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h4 class="mb-1">Cuadrante Riesgo - Ganancia</h4>
+                  <p class="text-muted small mb-0">Cada punto es un cultivo. Busca los que están arriba a la izquierda.</p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm glass-filter-btn active" data-filter="todos" id="filter-todos">Todos</button>
+                  <button class="btn btn-sm glass-filter-btn" data-filter="A" id="filter-A">Transitorios</button>
+                  <button class="btn btn-sm glass-filter-btn" data-filter="B" id="filter-B">Permanentes</button>
+                </div>
+              </div>
+
+              <!-- Buscador de cultivo dentro del gráfico -->
+              <div class="mb-3">
+                <input type="text" id="riesgo-search" class="form-control glass-input form-control-sm" placeholder="Buscar cultivo en el gráfico...">
+              </div>
+
+              <div style="height: 500px; width: 100%; position: relative;">
+                <canvas id="chart-riesgo-rendimiento"></canvas>
+              </div>
+
+              <!-- Leyenda de cuadrantes -->
+              <div class="row mt-3 g-2">
+                <div class="col-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span style="width:12px;height:12px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+                    <span class="small text-muted">Ideal</span>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span style="width:12px;height:12px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>
+                    <span class="small text-muted">Rentable pero arriesgado</span>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span style="width:12px;height:12px;border-radius:50%;background:#3b82f6;display:inline-block;"></span>
+                    <span class="small text-muted">Seguro, baja ganancia</span>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <span style="width:12px;height:12px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
+                    <span class="small text-muted">Evitar</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel lateral: ranking y detalle -->
+          <div class="col-lg-4 mb-4">
+            <!-- Top 5 Ideales -->
+            <div class="glass-panel p-4 mb-4">
+              <h6 class="mb-3">Top 5 - Mejor Relación</h6>
+              <div id="top-cultivos-riesgo" class="small">
+                <div class="text-muted text-center"><i class="fa-solid fa-spinner fa-spin"></i> Cargando...</div>
+              </div>
+            </div>
+
+            <!-- Detalle del cultivo seleccionado -->
+            <div class="glass-panel p-4" id="detalle-cultivo-panel" style="display:none;">
+              <h6 class="mb-3">Detalle del Cultivo</h6>
+              <div id="detalle-cultivo-content"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -216,7 +279,7 @@
       <!-- VISTA 3: Impacto Climático -->
       <div class="tab-pane fade" id="view-clima" role="tabpanel">
         <div class="glass-panel p-4">
-          <h4 class="mb-4"><i class="fa-solid fa-cloud-sun text-warning me-2"></i>Perfil Climático (Ocucaje / San Camilo)</h4>
+          <h4 class="mb-4">Perfil Climático (Ica)</h4>
           <p class="text-muted mb-4">Condiciones promedio reales que impactan la producción. La temperatura y humedad son vitales para la floración.</p>
           <div style="height: 400px; width: 100%;">
             <canvas id="chart-clima"></canvas>
@@ -224,24 +287,23 @@
         </div>
       </div>
 
-      <!-- VISTA 4: Mercado en Vivo -->
-      <div class="tab-pane fade" id="view-mercado" role="tabpanel">
+      <!-- VISTA 4: Proyección Provincial -->
+      <div class="tab-pane fade" id="view-proyeccion" role="tabpanel">
         <div class="row">
           <div class="col-lg-5 mb-4">
             <div class="glass-panel p-4 h-100 position-relative">
-              <div class="live-indicator"><div class="dot"></div> EN VIVO</div>
-              <h4 class="mb-4"><i class="fa-solid fa-arrow-trend-up text-success me-2"></i>Ranking Regional</h4>
-              <p class="text-muted small">Demanda cíclica actualizada en tiempo real.</p>
+              <h4 class="mb-4">Distribución Estimada</h4>
+              <p class="text-muted small">Muestra cómo se distribuiría la producción predicha (calculada en la pestaña Predicción) entre las 5 provincias principales de Ica.</p>
               
               <div id="ranking-container" class="mt-4">
-                <div class="text-center text-muted"><i class="fa-solid fa-spinner fa-spin"></i> Cargando datos...</div>
+                <div class="text-center text-muted">Genera una predicción primero para ver la distribución.</div>
               </div>
             </div>
           </div>
           <div class="col-lg-7 mb-4">
             <div class="glass-panel p-4 h-100">
-              <h4 class="mb-4"><i class="fa-solid fa-map-location-dot text-info me-2"></i>Mapa de Demanda</h4>
-              <p class="text-muted small mb-4">Distribución del interés de compra a nivel nacional.</p>
+              <h4 class="mb-4">Mapa Productivo</h4>
+              <p class="text-muted small mb-4">Ubicación de las provincias impactadas por la proyección.</p>
               <div id="map-container">
                 <!-- SVG de mapa placeholder -->
                 <div class="text-center">
