@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://agropredict-api-2026-awa4g5grbycxh5g4.canadacentral-01.azurewebsites.net";
 
 // Elementos Predicción
 const inputSearchCultivo = document.getElementById("input-search-cultivo");
